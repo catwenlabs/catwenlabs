@@ -18,12 +18,13 @@ jobs:
         env:
           PAT_1: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Clone github-readme-stats (Vercel serverless, no public instance available)
+          # Clone github-readme-stats (Vercel serverless; its public instance is unavailable)
           git clone --depth 1 https://github.com/anuraghazra/github-readme-stats.git /tmp/grs
           cd /tmp/grs
-          # husky postinstall fails outside a git repo context; skip all scripts
+          # husky postinstall fails outside a git repo; skip all scripts
           npm install --omit=dev --ignore-scripts --no-audit --no-fund > /dev/null 2>&1 || npm install --omit=dev --ignore-scripts --no-audit --no-fund
           cp "$GITHUB_WORKSPACE/.github/stats-server.mjs" server.mjs
+          cp "$GITHUB_WORKSPACE/.github/custom-stats.mjs" custom-stats.mjs
           node server.mjs &
           # wait for server to come up
           for i in $(seq 1 15); do
