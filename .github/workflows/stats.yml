@@ -18,10 +18,10 @@ jobs:
         run: |
           mkdir -p stats
           curl -sL --retry 3 \
-            "https://github-readme-stats.vercel.app/api?username=catwenlabs&show_icons=true&hide_title=true&count_private=true&theme=transparent" \
+            "https://stats.justsong.cn/api/github?username=catwenlabs&theme=transparent" \
             -o stats/stats.svg
           curl -sL --retry 3 \
-            "https://github-readme-stats.vercel.app/api/top-langs/?username=catwenlabs&layout=compact&theme=transparent&hide=css,html" \
+            "https://stats.justsong.cn/api/github?username=catwenlabs&type=top-langs&theme=transparent" \
             -o stats/top-langs.svg
 
       - name: Commit and push
