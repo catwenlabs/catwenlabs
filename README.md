@@ -42,17 +42,8 @@
 
 <div align="center">
 
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=catwenlabs&show_icons=true&hide_title=true&count_private=true&theme=transparent)
+![GitHub stats](https://cdn.jsdelivr.net/gh/catwenlabs/catwenlabs@main/stats/stats.svg)
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=catwenlabs&layout=compact&theme=transparent&hide=css,html)
+![Top Langs](https://cdn.jsdelivr.net/gh/catwenlabs/catwenlabs@main/stats/top-langs.svg)
 
 </div>
-
----
-
-<details>
-<summary>📜 博客 / Blog</summary>
-
-- [笔记整理](https://github.com/catwenlabs/Notes-And-Blog) — 阅读笔记及高质量博客整理（私有，待整理）
-
-</details>
