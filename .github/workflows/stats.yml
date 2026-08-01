@@ -14,15 +14,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate stats SVGs
+      - name: Self-host github-readme-stats and generate SVGs
+        env:
+          PAT_1: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p stats
-          curl -sL --retry 3 \
-            "https://stats.justsong.cn/api/github?username=catwenlabs&theme=transparent" \
-            -o stats/stats.svg
-          curl -sL --retry 3 \
-            "https://stats.justsong.cn/api/github?username=catwenlabs&type=top-langs&theme=transparent" \
-            -o stats/top-langs.svg
+          # Clone github-readme-stats (Vercel serverless, no public instance available)
+          git clone --depth 1 https://github.com/anuraghazra/github-readme-stats.git /tmp/grs
+          cd /tmp/grs
+          # husky postinstall fails outside a git repo context; skip all scripts
+          npm install --omit=dev --ignore-scripts --no-audit --no-fund > /dev/null 2>&1 || npm install --omit=dev --ignore-scripts --no-audit --no-fund
+          cp "$GITHUB_WORKSPACE/.github/stats-server.mjs" server.mjs
+          node server.mjs &
+          # wait for server to come up
+          for i in $(seq 1 15); do
+            if curl -sf -o /dev/null "http://127.0.0.1:3999/api?username=catwenlabs"; then break; fi
+            sleep 2
+          done
+          mkdir -p "$GITHUB_WORKSPACE/stats"
+          curl -sf --retry 3 "http://127.0.0.1:3999/api?username=catwenlabs&show_icons=true&hide_title=true&count_private=true&theme=transparent" \
+            -o "$GITHUB_WORKSPACE/stats/stats.svg"
+          curl -sf --retry 3 "http://127.0.0.1:3999/api/top-langs/?username=catwenlabs&layout=compact&theme=transparent&hide=css,html" \
+            -o "$GITHUB_WORKSPACE/stats/top-langs.svg"
+          ls -la "$GITHUB_WORKSPACE/stats"
 
       - name: Commit and push
         run: |
